@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="static/simple_statistics.js"></script>
+    <script src="static/underscore-min.js"></script>
+    <script src="static/SimpleLineChart.js"></script>
+    
+
+    <script>
+
+        var file_data = null;        
+        var summoner_id = getParameterByName('summonerId');
+        var chart;
+
+        //Load the file data
+        $.getJSON("/GetMatchHistory", {summonerId:summoner_id}, function(result){
+            file_data = result.matches.sort(function(a, b){return a.matchCreation - b.matchCreation;});
+            var stat_keys = Object.keys(file_data[0].participants[0].stats);
+            $.each(stat_keys, function(i, v){
+                var option = $('<option>' + v + '</option>')
+                    .attr('value', v);
+                $('#statsDropDown')
+                    .append(option);
+            });
+            d3.select('#statsDropDown').on('change', periodDropDownChanged);
+            d3.select('#periodDropDown').on('change', periodDropDownChanged);
+            
+            var num_matches = result.matches.length;
+            var num = 30;
+            var nums = [];
+            while(num <= num_matches){
+                nums.push(num);
+                num = num + 30;
+            }
+            if(num_matches % 30 != 30){
+                nums.push(num_matches);
+            }
+            
+            nums.sort(function(a, b){return a - b;}).reverse();
+            
+            $.each(nums,function(d, i){
+                var option = $('<option>' + i + '</option>')
+                    .attr('value', i);
+                $('#periodDropDown')
+                    .append(option);
+            });
+            
+            var svg = d3.select("#historyGraph");
+            chart = SimpleLineChart({
+                'parent': svg, 'width' : 600, 'height': 600,
+                'mright' : 20, 'mbottom': 60, 'mtop' : 20, 'mleft' : 50
+            });
+        });
+
+        //Drop down changed handler
+        function statDropDownChanged(){
+            var stat_type = $('#statsDropDown').val();
+            var stats = _.map(file_data, function(val, i){return [i, val.participants[0].stats[stat_type]];});
+            chart.attr('data', stats);
+            chart.attr('labels', [ "Game", stat_type ]);            
+            chart();
+        }
+        
+        function periodDropDownChanged(){
+            var stat_type = $('#statsDropDown').val();
+            var count = $('#periodDropDown').val();
+            var stats = _.last(_.map(file_data, function(val, i){return [i, val.participants[0].stats[stat_type]];}), count);
+            chart.attr('data', stats);
+            chart.attr('labels', [ "Game", stat_type ]);            
+            chart();
+        }
+
+        function getParameterByName(name) {
+            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(location.search);
+            return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+        
+
+    </script>
+    
+</head>
+
+<body>
+    
+    <select id='statsDropDown'></select>
+    <select id='periodDropDown'></select>
+
+    <svg id='historyGraph'></svg>
+    
+</body>

@@ -1,0 +1,71 @@
+
+.headers {
+    color: red;
+    background-image: url("league-of-legends-logo1.jpg");
+    height: 350px;
+    width: 750px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.topmenu{
+    display: inline;
+}
+
+.user-input p {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.bar {
+  fill: steelblue;
+}
+
+.axis text {
+  font: 12px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+table{
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
+.p1{
+  background: steelblue;
+}
+
+.p2{
+  background: #FF9933;
+}
+
+.hide{
+  display: none;
+}
+
+.line{
+    fill: none;
+    stroke: steelblue;
+}
+
+.line.regression{
+    stroke: red;
+}
