@@ -5,11 +5,8 @@ import urllib
 import re
 from collections import namedtuple
 import logging
-<<<<<<< HEAD
 from urllib2 import urlopen
-=======
 import cgi
->>>>>>> 3d8166852d43e94e336f014e39fc2be9414a7116
 
 DANNY_API_KEY = "ed6ffbec-a07d-4e27-8f75-194f7fd44af9"
 SLEEP_SECONDS = 1.2
@@ -216,7 +213,6 @@ def Crawl(summonerName):
 
 if __name__ == '__main__':
     print "Add your code here or import this file and create your own using these functions"
-<<<<<<< HEAD
     
 def getPeoplePlayedWith(summonerName): 
    summoner_history = GetMatchHistory(summonerName)
@@ -288,6 +284,4 @@ def comparePlayers(player1,player2,champ):
     output2 = "Player Name: " +str(player2)+" Average Kills: " +str(avgp2k) + " Average Deaths: " + str(avgp2d) +" Average Assists: " + str(avgp2a) + " Average Gold Earned: " + str(avgp2g)
     return output,output2
     
-=======
     #Crawl('fastuss')
->>>>>>> 3d8166852d43e94e336f014e39fc2be9414a7116
